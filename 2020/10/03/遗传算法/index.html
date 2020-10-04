@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Matlab 之遗传算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="遗传算法">
+<meta property="og:url" content="http://yoursite.com/2020/10/03/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="胖虎的个人博客">
+<meta property="og:description" content="Matlab 之遗传算法">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://my-picturebed.oss-cn-beijing.aliyuncs.com/BlogSrc/img/u=2253537857,2240319798&fm=26&gp=0.jpg">
+<meta property="og:image" content="https://my-picturebed.oss-cn-beijing.aliyuncs.com/BlogSrc/img/10386940-f6a0d1d8226405fa.jpg">
+<meta property="og:image" content="https://my-picturebed.oss-cn-beijing.aliyuncs.com/BlogSrc/img/20201004190036.png">
+<meta property="og:image" content="https://my-picturebed.oss-cn-beijing.aliyuncs.com/BlogSrc/img/20201004190154.png">
+<meta property="article:published_time" content="2020-10-03T04:22:41.000Z">
+<meta property="article:modified_time" content="2020-10-04T11:02:54.845Z">
+<meta property="article:author" content="Qinhu">
+<meta property="article:tag" content="matlab">
+<meta property="article:tag" content="遗传算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://my-picturebed.oss-cn-beijing.aliyuncs.com/BlogSrc/img/u=2253537857,2240319798&fm=26&gp=0.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2020/10/03/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>遗传算法 | 胖虎的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">胖虎的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/10/03/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://gitee.com/code_from_qh/myImage/raw/master/1592586493787.jpeg">
+      <meta itemprop="name" content="Qinhu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="胖虎的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          遗传算法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-03 12:22:41" itemprop="dateCreated datePublished" datetime="2020-10-03T12:22:41+08:00">2020-10-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-10-04 19:02:54" itemprop="dateModified" datetime="2020-10-04T19:02:54+08:00">2020-10-04</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2020/10/03/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/03/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><center>
+<img style="border-radius: 0.3125em;
+    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);align=center" 
+    src="https://my-picturebed.oss-cn-beijing.aliyuncs.com/BlogSrc/img/u=2253537857,2240319798&fm=26&gp=0.jpg">
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 2px;">Matlab 之遗传算法</div>
+</center>
+
+<a id="more"></a>
+
+<h2 id="遗传算法解决火力分配问题"><a href="#遗传算法解决火力分配问题" class="headerlink" title="遗传算法解决火力分配问题"></a>遗传算法解决火力分配问题</h2><h3 id="遗传算法过程图解"><a href="#遗传算法过程图解" class="headerlink" title="遗传算法过程图解"></a>遗传算法过程图解</h3><p><img src="https://my-picturebed.oss-cn-beijing.aliyuncs.com/BlogSrc/img/10386940-f6a0d1d8226405fa.jpg" alt=""></p>
+<h3 id="火力分配问题描述"><a href="#火力分配问题描述" class="headerlink" title="火力分配问题描述"></a>火力分配问题描述</h3><p><img src="https://my-picturebed.oss-cn-beijing.aliyuncs.com/BlogSrc/img/20201004190036.png" alt=""></p>
+<h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><p><code>targetalloc()</code> 函数主要内容：</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[eval]</span>=<span class="title">targetalloc</span><span class="params">(chrom)</span>         %目标函数</span></span><br><span class="line">[m,n]=<span class="built_in">size</span>(chrom);</span><br><span class="line"><span class="comment">%射击有利程度估计值</span></span><br><span class="line">p=[<span class="number">.87</span> <span class="number">.52</span> <span class="number">.11</span> <span class="number">.78</span> <span class="number">.72</span> <span class="number">.69</span> <span class="number">.94</span> <span class="number">.72</span> <span class="number">.36</span> <span class="number">.28</span> <span class="number">.27</span> <span class="number">.74</span> <span class="number">.24</span> <span class="number">.78</span> <span class="number">.45</span>;</span><br><span class="line">   <span class="number">.87</span> <span class="number">.52</span> <span class="number">.11</span> <span class="number">.78</span> <span class="number">.72</span> <span class="number">.69</span> <span class="number">.94</span> <span class="number">.72</span> <span class="number">.36</span> <span class="number">.28</span> <span class="number">.27</span> <span class="number">.74</span> <span class="number">.24</span> <span class="number">.78</span> <span class="number">.45</span>;</span><br><span class="line">   <span class="number">.87</span> <span class="number">.52</span> <span class="number">.11</span> <span class="number">.78</span> <span class="number">.72</span> <span class="number">.69</span> <span class="number">.94</span> <span class="number">.72</span> <span class="number">.36</span> <span class="number">.28</span> <span class="number">.27</span> <span class="number">.74</span> <span class="number">.24</span> <span class="number">.78</span> <span class="number">.45</span>;</span><br><span class="line">   <span class="number">.87</span> <span class="number">.52</span> <span class="number">.11</span> <span class="number">.78</span> <span class="number">.72</span> <span class="number">.69</span> <span class="number">.94</span> <span class="number">.72</span> <span class="number">.36</span> <span class="number">.28</span> <span class="number">.27</span> <span class="number">.74</span> <span class="number">.24</span> <span class="number">.78</span> <span class="number">.45</span>;</span><br><span class="line">   <span class="number">.87</span> <span class="number">.52</span> <span class="number">.11</span> <span class="number">.78</span> <span class="number">.72</span> <span class="number">.69</span> <span class="number">.94</span> <span class="number">.72</span> <span class="number">.36</span> <span class="number">.28</span> <span class="number">.27</span> <span class="number">.74</span> <span class="number">.24</span> <span class="number">.78</span> <span class="number">.45</span>;</span><br><span class="line">   <span class="number">.87</span> <span class="number">.52</span> <span class="number">.11</span> <span class="number">.78</span> <span class="number">.72</span> <span class="number">.69</span> <span class="number">.94</span> <span class="number">.72</span> <span class="number">.36</span> <span class="number">.28</span> <span class="number">.27</span> <span class="number">.74</span> <span class="number">.24</span> <span class="number">.78</span> <span class="number">.45</span>;</span><br><span class="line">   <span class="number">.62</span> <span class="number">.87</span> <span class="number">.70</span> <span class="number">.22</span> <span class="number">.80</span> <span class="number">.42</span> <span class="number">.43</span> <span class="number">.90</span> <span class="number">.13</span> <span class="number">.95</span> <span class="number">.18</span> <span class="number">.19</span> <span class="number">.12</span> <span class="number">.61</span> <span class="number">.35</span>;</span><br><span class="line">   <span class="number">.48</span> <span class="number">.20</span> <span class="number">.42</span> <span class="number">.16</span> <span class="number">.43</span> <span class="number">.58</span> <span class="number">.69</span> <span class="number">.03</span> <span class="number">.34</span> <span class="number">.72</span> <span class="number">.15</span> <span class="number">.24</span> <span class="number">.29</span> <span class="number">.30</span> <span class="number">.75</span>];</span><br><span class="line"><span class="comment">%威胁程度评估值</span></span><br><span class="line">w=[<span class="number">.47</span> <span class="number">.97</span> <span class="number">.76</span> <span class="number">.62</span> <span class="number">.48</span> <span class="number">.77</span> <span class="number">.33</span> <span class="number">.74</span> <span class="number">.54</span> <span class="number">.65</span> <span class="number">.43</span> <span class="number">.35</span> <span class="number">.63</span> <span class="number">.66</span> <span class="number">.57</span>];</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:m</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">j</span>=<span class="number">1</span>:<span class="number">15</span></span><br><span class="line">        chrom(<span class="built_in">i</span>,<span class="built_in">j</span>)=p(chrom(<span class="built_in">i</span>,<span class="built_in">j</span>),<span class="built_in">j</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">eval=chrom*w';</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="代码编写思路："><a href="#代码编写思路：" class="headerlink" title="代码编写思路："></a>代码编写思路：</h3><ol>
+<li>初始化种群</li>
+<li>对每个个体的适应度（函数 <code>targetalloc()</code> 函数的返回值）进行评估</li>
+<li>通过 <strong>轮盘赌</strong> 的方式选择相应的个体</li>
+<li>对所选择的个体进行交叉变异</li>
+</ol>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line">clc</span><br><span class="line">clear</span><br><span class="line">MAXGEN=<span class="number">200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%创建初始种群</span></span><br><span class="line">a = <span class="built_in">zeros</span>(<span class="number">40</span>,<span class="number">15</span>);</span><br><span class="line">trace=<span class="built_in">zeros</span>(MAXGEN,<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">sum1=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">%循环赋值</span></span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:<span class="number">40</span> </span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">j</span>=<span class="number">1</span>:<span class="number">15</span></span><br><span class="line">        a(<span class="built_in">i</span>,<span class="built_in">j</span>)=<span class="built_in">ceil</span>(<span class="built_in">rand</span>*<span class="number">8</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% Y表示所有代最大的函数值</span></span><br><span class="line">Y = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">%Masub最大函数值对应的个体</span></span><br><span class="line">MaxGeti = <span class="built_in">zeros</span>(<span class="number">1</span>,<span class="number">15</span>);</span><br><span class="line"></span><br><span class="line">na=<span class="built_in">zeros</span>(<span class="number">40</span>,<span class="number">15</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">%迭代</span></span><br><span class="line"> <span class="keyword">for</span> g=<span class="number">1</span>:MAXGEN</span><br><span class="line">     </span><br><span class="line">    b = targetalloc(a);</span><br><span class="line"></span><br><span class="line">    <span class="comment">%差别放大 </span></span><br><span class="line">    c = b.*b.*b;</span><br><span class="line"></span><br><span class="line">    <span class="comment">%计算概率：轮盘赌</span></span><br><span class="line">    thesum = sum(c);</span><br><span class="line"></span><br><span class="line">    <span class="comment">% gailv 存储四十个概率值</span></span><br><span class="line">    gailv = <span class="built_in">zeros</span>(<span class="number">40</span>,<span class="number">1</span>);</span><br><span class="line">    gailv = c./thesum;</span><br><span class="line">     </span><br><span class="line">    <span class="comment">%概率geti存储个体序号 </span></span><br><span class="line">    geti=<span class="built_in">zeros</span>(<span class="number">40</span>,<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:<span class="number">40</span></span><br><span class="line">        <span class="comment">%产生随机数</span></span><br><span class="line">        num1=<span class="built_in">rand</span>;</span><br><span class="line">        <span class="comment">%依次减去概率值</span></span><br><span class="line">        <span class="keyword">for</span> <span class="built_in">j</span>=<span class="number">1</span>:<span class="number">40</span></span><br><span class="line">            num1=num1-gailv(<span class="built_in">j</span>,<span class="number">1</span>);</span><br><span class="line">            <span class="keyword">if</span> num1&lt;=<span class="number">0</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        <span class="comment">%geti(i,1)=j;</span></span><br><span class="line">        na(<span class="built_in">i</span>,:) = a(<span class="built_in">j</span>,:);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">%执行轮盘赌之前最优的代替执行完后最优的</span></span><br><span class="line">    [~,be]=<span class="built_in">max</span>(a);</span><br><span class="line">    [~,wr]=<span class="built_in">min</span>(na);</span><br><span class="line">    na(wr,:)=a(be,:);</span><br><span class="line"></span><br><span class="line">    <span class="comment">%交叉</span></span><br><span class="line"><span class="comment">%     for i=1:20</span></span><br><span class="line"><span class="comment">%         %截断点</span></span><br><span class="line"><span class="comment">%         cut = floor(rand*15);</span></span><br><span class="line"><span class="comment">%         temp = a(geti(2*i-1,1),:);</span></span><br><span class="line"><span class="comment">%         a(geti(2*i-1,1),cut+1:15)=a(geti(2*i,1),cut+1:15);</span></span><br><span class="line"><span class="comment">%         a(geti(2*i,1),cut+1:15)=temp(cut+1:15);</span></span><br><span class="line"><span class="comment">%     end</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:<span class="number">20</span></span><br><span class="line">        cut = <span class="built_in">floor</span>(<span class="built_in">rand</span>*<span class="number">15</span>);</span><br><span class="line">        temp = na(<span class="number">2</span>*<span class="number">1</span><span class="number">-1</span>,:);</span><br><span class="line">        na(<span class="number">2</span>*<span class="built_in">i</span><span class="number">-1</span>,cut+<span class="number">1</span>:<span class="number">15</span>)=na(<span class="number">2</span>*<span class="built_in">i</span>,cut+<span class="number">1</span>:<span class="number">15</span>);</span><br><span class="line">        na(<span class="number">2</span>*<span class="built_in">i</span>,cut+<span class="number">1</span>:<span class="number">15</span>)=temp(cut+<span class="number">1</span>:<span class="number">15</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">%变异</span></span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:<span class="number">40</span></span><br><span class="line">        num2=<span class="built_in">ceil</span>(<span class="built_in">rand</span>*<span class="number">15</span>);</span><br><span class="line">        na(<span class="built_in">i</span>,num2)=<span class="built_in">ceil</span>(<span class="built_in">rand</span>*<span class="number">8</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">%记录同一代的函数值</span></span><br><span class="line">    result=targetalloc(na);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">%将上一代最大的覆盖掉本代最小的个体</span></span><br><span class="line">    [currentBest,Inde]=<span class="built_in">max</span>(result);</span><br><span class="line">    [currentBad,Inde2]=<span class="built_in">min</span>(result);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> currentBest&lt;Y</span><br><span class="line">        currentBest=Y;</span><br><span class="line">        a(Inde2,:)=MaxGeti;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    </span><br><span class="line">     <span class="comment">%将最大的函数值和个体记录下来</span></span><br><span class="line">     Y = currentBest;</span><br><span class="line">     </span><br><span class="line">     <span class="comment">%记录下最大的个体</span></span><br><span class="line">     MaxGeti=a(Inde,:);</span><br><span class="line">     </span><br><span class="line">     <span class="comment">%记录下最大个体的值</span></span><br><span class="line">     trace1(g,<span class="number">1</span>)=Y;</span><br><span class="line">     </span><br><span class="line">     a = na;</span><br><span class="line">        </span><br><span class="line"> <span class="keyword">end</span></span><br><span class="line"> <span class="built_in">plot</span>(trace1(:,<span class="number">1</span>),<span class="string">"-."</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="代码运行结果"><a href="#代码运行结果" class="headerlink" title="代码运行结果"></a>代码运行结果</h3><p><img src="https://my-picturebed.oss-cn-beijing.aliyuncs.com/BlogSrc/img/20201004190154.png" alt=""></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/matlab/" rel="tag"># matlab</a>
+              <a href="/tags/%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95/" rel="tag"># 遗传算法</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/04/%E5%A4%87%E4%BB%BDHexo%E6%95%B4%E4%B8%AA%E9%A1%B9%E7%9B%AE%E6%96%87%E4%BB%B6/" rel="prev" title="备份Hexo整个项目文件">
+      <i class="fa fa-chevron-left"></i> 备份Hexo整个项目文件
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#遗传算法解决火力分配问题"><span class="nav-number">1.</span> <span class="nav-text">遗传算法解决火力分配问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#遗传算法过程图解"><span class="nav-number">1.1.</span> <span class="nav-text">遗传算法过程图解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#火力分配问题描述"><span class="nav-number">1.2.</span> <span class="nav-text">火力分配问题描述</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码示例"><span class="nav-number">2.</span> <span class="nav-text">代码示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码编写思路："><span class="nav-number">2.1.</span> <span class="nav-text">代码编写思路：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码运行结果"><span class="nav-number">2.2.</span> <span class="nav-text">代码运行结果</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Qinhu"
+      src="https://gitee.com/code_from_qh/myImage/raw/master/1592586493787.jpeg">
+  <p class="site-author-name" itemprop="name">Qinhu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/TIG-KI" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;TIG-KI" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Qinhu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'dark',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'kzqTMceTKkk3JwnRul391Q9X-gzGzoHsz',
+      appKey     : '3E7OtPzsVRoavTdbbPNSuIfz',
+      placeholder: "说点什么？",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
